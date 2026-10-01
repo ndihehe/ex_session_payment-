@@ -56,18 +56,27 @@ public class PaymentService {
         vnp_Params.put("vnp_OrderType", "other");
         vnp_Params.put("vnp_Locale", "vn");
 
-        // Xây dựng return URL động
-        String scheme = request.getScheme();
-        String serverName = request.getServerName();
-        int serverPort = request.getServerPort();
+        // Xây dựng return URL động (hỗ trợ reverse proxy như Render / Cloudflare)
+        String proto = request.getHeader("X-Forwarded-Proto");
+        String scheme = (proto != null && !proto.isEmpty()) ? proto : request.getScheme();
+        String host = request.getHeader("X-Forwarded-Host");
+        if (host == null || host.isEmpty()) {
+            host = request.getServerName();
+            int serverPort = request.getServerPort();
+            if (serverPort != 80 && serverPort != 443 && proto == null) {
+                host += ":" + serverPort;
+            }
+        }
         String contextPath = request.getContextPath();
-        String returnUrl = scheme + "://" + serverName + (serverPort == 80 || serverPort == 443 ? "" : ":" + serverPort)
-                + contextPath + "/vnpay-return";
+        String returnUrl = scheme + "://" + host + contextPath + "/vnpay-return";
         vnp_Params.put("vnp_ReturnUrl", returnUrl);
         vnp_Params.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
 
-        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        TimeZone vnTimeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
+        Calendar cld = Calendar.getInstance(vnTimeZone);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        formatter.setTimeZone(vnTimeZone);
+
         String vnp_CreateDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
 

@@ -7,6 +7,7 @@ import org.example.util.MailUtil;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class EmailService {
 
@@ -38,6 +39,7 @@ public class EmailService {
 
     private String buildOrderSuccessEmailHtml(Order order) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         String formattedDate = dateFormat.format(order.getOrderDate());
 
         NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
