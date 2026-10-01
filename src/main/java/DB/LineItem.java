@@ -1,22 +1,15 @@
 package DB;
 
-public class LineItem {
-    private Product product;
-    private int quantity;
-
-    public LineItem() {}
-
-    public LineItem(Product product, int quantity) {
-        this.product = product;
-        this.quantity = quantity;
+/**
+ * @deprecated Use {@link org.example.model.LineItem} instead.
+ */
+@Deprecated
+public class LineItem extends org.example.model.LineItem {
+    public LineItem() {
+        super();
     }
 
-    public Product getProduct() { return product; }
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
-    public void setProduct(Product product) { this.product = product; }
-    public double getTotal() {
-        return Math.round(product.getPrice() * quantity * 100.0) / 100.0;
+    public LineItem(org.example.model.Product product, int quantity) {
+        super(product, quantity);
     }
-
 }

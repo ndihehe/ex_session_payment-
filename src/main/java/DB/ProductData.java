@@ -1,43 +1,23 @@
 package DB;
 
-import java.util.ArrayList;
+import org.example.dao.ProductDAO;
+import org.example.dao.ProductDAOImpl;
+import org.example.model.Product;
+
 import java.util.List;
 
+/**
+ * @deprecated Use {@link org.example.dao.ProductDAO} or {@link org.example.service.ProductService} instead.
+ */
+@Deprecated
 public class ProductData {
-
-    private static final List<Product> products = new ArrayList<>();
-
-    static {
-        products.add(new Product(
-                "86 (the band) - True Life Songs and Pictures",
-                "pd01",
-                14.95
-        ));
-
-        products.add(new Product(
-                "Paddlefoot - The first CD",
-                "pd02",
-                12.95
-        ));
-
-        products.add(new Product(
-                "Paddlefoot - The second CD",
-                "pd03",
-                14.95
-        ));
-    }
+    private static final ProductDAO dao = new ProductDAOImpl();
 
     public static List<Product> getProducts() {
-        return products;
+        return dao.getAllProducts();
     }
 
     public static Product getProductByCode(String code) {
-        for (Product product : products) {
-            if (product.getCode().equals(code)) {
-                return product;
-            }
-        }
-
-        return null;
+        return dao.getProductByCode(code);
     }
 }

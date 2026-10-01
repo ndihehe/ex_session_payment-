@@ -1,31 +1,15 @@
 package DB;
 
-public class Product {
-    private String description;
-    private String code;
-    private double price;
-
-
+/**
+ * @deprecated Use {@link org.example.model.Product} instead.
+ */
+@Deprecated
+public class Product extends org.example.model.Product {
     public Product() {
+        super();
     }
 
     public Product(String description, String code, double price) {
-        this.description = description;
-        this.code = code;
-        this.price = price;
-    }
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-
-    public double getPrice() {
-        return price;
+        super(description, code, price);
     }
 }
